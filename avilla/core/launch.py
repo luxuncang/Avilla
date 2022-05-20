@@ -32,11 +32,11 @@ def resolve_requirements(components: Set[LaunchComponent]) -> List[Set[LaunchCom
     resolved = set()
     result = []
     while components:
-        layer = set()
-        for index, component in enumerate(components):
-            if component.required.issubset(resolved):
-                layer.add(component)
-        if layer:
+        if layer := {
+            component
+            for component in components
+            if component.required.issubset(resolved)
+        }:
             components -= layer
             resolved.update(component.id for component in layer)
             result.append(layer)

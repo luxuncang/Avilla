@@ -52,9 +52,11 @@ class Components(Decorator, Generic[T]):
         selected = []
         matched_times = 0
         for value in chain.__root__:
-            if self._match_times is not None:
-                if matched_times >= self._match_times + self._skip_times:
-                    break
+            if (
+                self._match_times is not None
+                and matched_times >= self._match_times + self._skip_times
+            ):
+                break
             if self._filter(value):
                 selected.append(value)
                 matched_times += 1

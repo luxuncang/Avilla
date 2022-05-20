@@ -19,7 +19,8 @@ class Metadata:
 
     async def check_operator(self, metakey: str, operator: str) -> bool:
         return any(
-            [await self.protocol.check_metadata_access(scope, metakey, operator) for scope in self.scopes]
+            await self.protocol.check_metadata_access(scope, metakey, operator)
+            for scope in self.scopes
         )
 
     async def operate(

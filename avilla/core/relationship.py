@@ -29,8 +29,7 @@ class ExecutorWrapper:
                 yield from exit_stack.enter_async_context(
                     middleware(self.relationship, self.execution)  # type: ignore
                 ).__await__()
-            result = yield from self.relationship.protocol.ensure_execution(self.execution)
-            return result
+            return (yield from self.relationship.protocol.ensure_execution(self.execution))
         finally:
             yield from exit_stack.__aexit__(None, None, None).__await__()
 

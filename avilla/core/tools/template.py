@@ -8,9 +8,7 @@ from avilla.core.message.element import Element
 
 
 def list_get(seq: Sequence, index, default=None):
-    if len(seq) - 1 >= index:
-        return seq[index]
-    return default
+    return seq[index] if len(seq) - 1 >= index else default
 
 
 _split = regex.compile(r"(?|(\$[a-zA-Z_][a-zA-Z0-9_]*)|(\$[0-9]*))")
@@ -31,9 +29,8 @@ class Template:
             if pattern:
                 if not pattern.startswith("$"):
                     patterns.append(Text(pattern))
-                else:
-                    if regex.match(r"\$[a-zA-Z_][a-zA-Z0-9_]*", pattern):
-                        patterns.append(kwargs.get(pattern[1:], Text(pattern)))
-                    elif regex.match(r"\$[0-9]*", pattern):
-                        patterns.append(list_get(args, int(pattern[1:])))
+                elif regex.match(r"\$[a-zA-Z_][a-zA-Z0-9_]*", pattern):
+                    patterns.append(kwargs.get(pattern[1:], Text(pattern)))
+                elif regex.match(r"\$[0-9]*", pattern):
+                    patterns.append(list_get(args, int(pattern[1:])))
         return MessageChain.create(patterns)

@@ -17,7 +17,7 @@ class SelectorKey:
         return instance
 
     def __getattr__(self, addition_name: str):
-        self.key += "." + addition_name
+        self.key += f".{addition_name}"
         return self
 
     def __repr__(self):
@@ -25,8 +25,8 @@ class SelectorKey:
 
 
 class SelectorMeta(type):
-    def __getattr__(cls, key: str) -> "SelectorKey":
-        return SelectorKey(cls.scope, key)  # type: ignore
+    def __getattr__(self, key: str) -> "SelectorKey":
+        return SelectorKey(self.scope, key)
 
 
 class Selector(metaclass=SelectorMeta):
